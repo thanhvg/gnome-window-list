@@ -172,6 +172,9 @@ const WindowTitle = new Lang.Class({
       this._metaWindow.connect('notify::minimized',
         Lang.bind(this, this._minimizedChanged));
     this._minimizedChanged();
+    let _workspace = this._metaWindow.get_workspace();
+    this._windowAdded = _workspace.connect('window-added', Lang.bind(this, this._updateTitle));
+    this._windowRemoved = _workspace.connect('window-removed', Lang.bind(this, this._updateTitle));
   },
 
   _minimizedChanged: function() {
@@ -183,7 +186,8 @@ const WindowTitle = new Lang.Class({
     if (!this._metaWindow.title)
       return;
 
-    let metaWorkspace = global.screen.get_active_workspace();
+    // let metaWorkspace = global.screen.get_active_workspace();
+    let metaWorkspace = this._metaWindow.get_workspace();
 
     let windows = metaWorkspace.list_windows()
           .filter(function(w) {
@@ -218,6 +222,8 @@ const WindowTitle = new Lang.Class({
     this._textureCache.disconnect(this._iconThemeChangedId);
     this._metaWindow.disconnect(this._notifyTitleId);
     this._metaWindow.disconnect(this._notifyMinimizedId);
+    this._metaWindow.get_workspace().disconnect(this._windowAdded);
+    this._metaWindow.get_workspace().disconnect(this._windowRemoved);
   }
 });
 
