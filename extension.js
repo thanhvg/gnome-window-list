@@ -173,8 +173,10 @@ const WindowTitle = new Lang.Class({
         Lang.bind(this, this._minimizedChanged));
     this._minimizedChanged();
     let _workspace = this._metaWindow.get_workspace();
-    this._windowAdded = _workspace.connect('window-added', Lang.bind(this, this._updateTitle));
-    this._windowRemoved = _workspace.connect('window-removed', Lang.bind(this, this._updateTitle));
+    this._windowAdded = _workspace.connect('window-added', Lang.bind(this,
+      this._updateTitle));
+    this._windowRemoved = _workspace.connect('window-removed', Lang.bind(
+      this, this._updateTitle));
   },
 
   _minimizedChanged: function() {
@@ -189,16 +191,19 @@ const WindowTitle = new Lang.Class({
     // let metaWorkspace = global.screen.get_active_workspace();
     let metaWorkspace = this._metaWindow.get_workspace();
 
+    if (!metaWorkspace)
+      return;
+
     let windows = metaWorkspace.list_windows()
-          .filter(function(w) {
-            return w && !w.skip_taskbar;
-          })
-          .sort(function(w1, w2) {
-      return w1.get_stable_sequence() - w2.get_stable_sequence();
-    });
+      .filter(function(w) {
+        return w && !w.skip_taskbar;
+      })
+      .sort(function(w1, w2) {
+        return w1.get_stable_sequence() - w2.get_stable_sequence();
+      });
 
     let myIndex = windows.indexOf(this._metaWindow) + 1;
-    let myTitle =  myIndex + '.' + this._metaWindow.title;
+    let myTitle = myIndex + '.' + this._metaWindow.title;
 
     if (this._metaWindow.minimized)
       this.label_actor.text = '[%s]'.format(myTitle);
@@ -222,8 +227,10 @@ const WindowTitle = new Lang.Class({
     this._textureCache.disconnect(this._iconThemeChangedId);
     this._metaWindow.disconnect(this._notifyTitleId);
     this._metaWindow.disconnect(this._notifyMinimizedId);
-    this._metaWindow.get_workspace().disconnect(this._windowAdded);
-    this._metaWindow.get_workspace().disconnect(this._windowRemoved);
+    this._metaWindow.get_workspace()
+      .disconnect(this._windowAdded);
+    this._metaWindow.get_workspace()
+      .disconnect(this._windowRemoved);
   }
 });
 
