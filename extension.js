@@ -172,11 +172,12 @@ const WindowTitle = new Lang.Class({
       this._metaWindow.connect('notify::minimized',
         Lang.bind(this, this._minimizedChanged));
     this._minimizedChanged();
-    let _workspace = this._metaWindow.get_workspace();
-    this._windowAdded = _workspace.connect('window-added', Lang.bind(this,
-      this._updateTitle));
-    this._windowRemoved = _workspace.connect('window-removed', Lang.bind(
-      this, this._updateTitle));
+    this._myUpdateTitle = Lang.bind(this, this._updateTitle);
+    // let _workspace = this._metaWindow.get_workspace();
+    // this._windowAdded = _workspace.connect('window-added', Lang.bind(this,
+    //   this._updateTitle));
+    // this._windowRemoved = _workspace.connect('window-removed', Lang.bind(
+    //   this, this._updateTitle));
   },
 
   _minimizedChanged: function() {
@@ -227,10 +228,10 @@ const WindowTitle = new Lang.Class({
     this._textureCache.disconnect(this._iconThemeChangedId);
     this._metaWindow.disconnect(this._notifyTitleId);
     this._metaWindow.disconnect(this._notifyMinimizedId);
-    this._metaWindow.get_workspace()
-      .disconnect(this._windowAdded);
-    this._metaWindow.get_workspace()
-      .disconnect(this._windowRemoved);
+    // this._metaWindow.get_workspace()
+    //   .disconnect(this._windowAdded);
+    // this._metaWindow.get_workspace()
+    //   .disconnect(this._windowRemoved);
   }
 });
 
@@ -1155,6 +1156,10 @@ const WindowList = new Lang.Class({
     if (this._grouped)
       return;
 
+    this._windowList.get_children().forEach(function(child){
+      child._delegate._windowTitle._myUpdateTitle();
+    });
+
     let children = this._windowList.get_children();
     for (let i = 0; i < children.length; i++) {
       if (children[i]._delegate.metaWindow == win)
@@ -1166,6 +1171,7 @@ const WindowList = new Lang.Class({
       true, true, true,
       Clutter.BoxAlignment.START,
       Clutter.BoxAlignment.START);
+
   },
 
   _onWindowRemoved: function(ws, win) {
@@ -1175,6 +1181,9 @@ const WindowList = new Lang.Class({
     if (this._grouped)
       return;
 
+    this._windowList.get_children().forEach(function(child){
+      child._delegate._windowTitle._myUpdateTitle();
+    });
     if (win.get_compositor_private())
       return; // not actually removed, just moved to another workspace
 
@@ -1182,7 +1191,7 @@ const WindowList = new Lang.Class({
     for (let i = 0; i < children.length; i++) {
       if (children[i]._delegate.metaWindow == win) {
         children[i].destroy();
-        return;
+        break;
       }
     }
   },
