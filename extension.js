@@ -195,13 +195,12 @@ const WindowTitle = new Lang.Class({
     if (!metaWorkspace)
       return;
 
+    let _monitorIndex = this._metaWindow.get_monitor();
+
     let windows = metaWorkspace.list_windows()
-      .filter(function(w) {
-        return w && !w.skip_taskbar;
-      })
-      .sort(function(w1, w2) {
-        return w1.get_stable_sequence() - w2.get_stable_sequence();
-      });
+      .filter(function(w) {return w && !w.skip_taskbar;})
+      .filter(function(w) { return w.get_monitor() == _monitorIndex; })
+      .sort(function(w1, w2) {return w1.get_stable_sequence() - w2.get_stable_sequence();});
 
     let myIndex = windows.indexOf(this._metaWindow) + 1;
     let myTitle = myIndex + '.' + this._metaWindow.title;
@@ -412,6 +411,7 @@ const WindowButton = new Lang.Class({
   _windowEnteredOrLeftMonitor: function(metaScreen, monitorIndex,
     metaWindow) {
     if (monitorIndex == this._monitorIndex && metaWindow == this.metaWindow)
+	    this._updateIconGeometry(); // Thanh
       this._updateVisibility();
   },
 
