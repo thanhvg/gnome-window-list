@@ -408,11 +408,12 @@ const WindowButton = new Lang.Class({
       this.actor.remove_style_class_name('minimized');
   },
 
-  _windowEnteredOrLeftMonitor: function(metaScreen, monitorIndex,
-    metaWindow) {
-    if (monitorIndex == this._monitorIndex && metaWindow == this.metaWindow)
+  _windowEnteredOrLeftMonitor: function(metaScreen, monitorIndex, metaWindow) {
+    this._windowTitle._myUpdateTitle();
+    if (monitorIndex == this._monitorIndex && metaWindow == this.metaWindow){
 	    this._updateIconGeometry(); // Thanh
       this._updateVisibility();
+    }
   },
 
   _updateVisibility: function() {
@@ -1166,6 +1167,7 @@ const WindowList = new Lang.Class({
         return;
     }
 
+
     let button = new WindowButton(win, this._perMonitor, this._monitor.index);
     this._windowList.layout_manager.pack(button.actor,
       true, true, true,
@@ -1271,8 +1273,7 @@ const WindowList = new Lang.Class({
 
   _activateWindow: function() {
     let [x, y] = global.get_pointer();
-    let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL,
-      x, y);
+    let pickedActor = global.stage.get_actor_at_pos(Clutter.PickMode.ALL, x, y);
 
     if (this._dndWindow && this.actor.contains(pickedActor))
       this._dndWindow.activate(global.get_current_time());
