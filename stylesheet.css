@@ -44,16 +44,20 @@
 
 .window-button:active > StWidget,
 .window-button:focus > StWidget {
-  box-shadow: inset 2px 2px 4px rgba(255,255,255,0.5);
+  /* box-shadow: inset 2px 2px 4px rgba(255,255,255,0.5); */
+  box-shadow: inset 2px 2px 4px green;
 }
 
 .window-button.focused > StWidget {
   color: white;
-  box-shadow: inset 1px 1px 4px rgba(255,255,255,0.7);
+  /* box-shadow: inset 1px 1px 4px rgba(255,255,255,0.7); */
+  box-shadow: inset 2px 2px 4px green;
 }
 
 .window-button.focused:active > StWidget {
-  box-shadow: inset 2px 2px 4px rgba(255,255,255,0.7);
+  /* box-shadow: inset 2px 2px 4px rgba(255,255,255,0.7); */
+
+  box-shadow: inset 2px 2px 4px green;
 }
 
 .window-button.minimized > StWidget {
@@ -62,7 +66,8 @@
 }
 
 .window-button.minimized:active > StWidget {
-  box-shadow: inset -2px -2px 4px rgba(255,255,255,0.5);
+  /* box-shadow: inset -2px -2px 4px rgba(255,255,255,0.5); */
+  box-shadow: inset -2px -2px 4px green;
 }
 
 .window-button-icon {
