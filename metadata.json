@@ -3,6 +3,8 @@
   "name": "Window List",
   "settings-schema": "org.gnome.shell.extensions.window-list",
   "shell-version": ["3.14", "3.18", "3.20"],
+  "extension-id": "window-list",
+  "gettext-domain": "gnome-shell-extensions",
   "uuid": "window-list@thanhvg",
   "version": 16
 }
