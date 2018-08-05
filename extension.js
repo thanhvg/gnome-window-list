@@ -1321,14 +1321,10 @@ const WindowList = new Lang.Class({
   }
 });
 
-function WinNum() {
-  this.init();
-}
-
-WinNum.prototype = {
+const WinNum = new Lang.Class({
   Name: 'WinNum',
 
-  init: function() {
+  _init: function() {
     this.settings = Convenience.getSettings();
   },
 
@@ -1388,7 +1384,7 @@ WinNum.prototype = {
       this._removeKeybindings('app-shift-key'+i);
     }
   },
-};
+});
 
 const Extension = new Lang.Class({
   Name: 'Extension',
