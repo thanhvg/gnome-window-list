@@ -1,6 +1,6 @@
 .bottom-panel {
   background-color: black;
-  height: 2.25em;
+  height: 1.7em;
 }
 
 .window-list {
@@ -42,8 +42,8 @@
 }
 
 .window-button-icon {
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
 }
 
 .window-list-workspace-indicator {
