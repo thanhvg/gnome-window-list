@@ -5,7 +5,7 @@
 
 .window-list {
   /* spacing: 2px; */
-  font-size: 10pt;
+  /* font-size: 9pt; */
 }
 
 .window-button {
@@ -23,7 +23,6 @@
   background-color: black;
   border-radius: 2px;
   padding: 2px 6px 2px;
-  /* text-shadow: 1px 1px 4px rgba(0,0,0,0.8); */
 }
 
 .window-button:hover > StWidget {
