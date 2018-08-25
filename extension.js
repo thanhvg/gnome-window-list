@@ -1329,16 +1329,17 @@ const WinNum = new Lang.Class({
   },
 
   handler: function(num) {
+    // Main.notify('inside handler'+ num);
     let wn;
     let metaWorkspace = global.screen.get_active_workspace();
     let focus_window = global.display.focus_window;
-    let monitor = focus_window.get_monitor();
+    let monitor = focus_window ? focus_window.get_monitor() : global.screen.get_current_monitor();
     let windows = metaWorkspace.list_windows()
           .filter(function(w) {return w && !w.skip_taskbar && w.get_monitor() == monitor;})
           .sort(function(w1, w2) {
             return w1.get_stable_sequence() - w2.get_stable_sequence();
           });
-    if (num == -1) wn = windows[windows.length-1];
+    if (num == -1) wn = windows[windows.length - 1];
       else wn = windows[num];
     if (wn == focus_window) wn.minimize();
       else wn.activate(0);
@@ -1349,7 +1350,7 @@ const WinNum = new Lang.Class({
     let wn;
     let metaWorkspace = global.screen.get_active_workspace();
     let focus_window = global.display.focus_window;
-    let monitor = focus_window.get_monitor();
+    let monitor = focus_window ? focus_window.get_monitor() : global.screen.get_current_monitor();
     let windows = metaWorkspace.list_windows()
           .filter(function(w) {return w && !w.skip_taskbar && w.get_monitor() != monitor;})
           .sort(function(w1, w2) {
@@ -1363,8 +1364,8 @@ const WinNum = new Lang.Class({
 
   _addKeybindings: function(name, num, handler) {
     // Main.notify('inside _addKeybindings '+ num);
-    var ModeType = Shell.hasOwnProperty('ActionMode') ? Shell.ActionMode : Shell.KeyBindingMode;
-    Main.wm.addKeybinding(name, this.settings, Meta.KeyBindingFlags.NONE, ModeType.NORMAL | ModeType.OVERVIEW, Lang.bind(this, function() {handler(num-1);}));
+    // var ModeType = Shell.hasOwnProperty('ActionMode') ? Shell.ActionMode : Shell.KeyBindingMode;
+    Main.wm.addKeybinding(name, this.settings, Meta.KeyBindingFlags.NONE, Shell.ActionMode.NORMAL, Lang.bind(this, function() {handler(num-1);}));
   },
 
   _removeKeybindings: function(name) {
